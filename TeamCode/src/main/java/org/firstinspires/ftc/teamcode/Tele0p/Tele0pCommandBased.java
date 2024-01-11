@@ -45,7 +45,7 @@ public class Tele0pCommandBased extends CommandOpMode {
 
 
 
-        robot.loop(drive, intake);
+        robot.loop(intake);
         robot.write(intake);
         //double loop = System.nanoTime();
 //        telemetry.addData ();

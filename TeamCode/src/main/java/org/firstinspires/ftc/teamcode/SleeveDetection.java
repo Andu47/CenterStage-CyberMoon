@@ -36,6 +36,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 /*
  * This sample demonstrates a basic (but battle-tested and essentially
@@ -45,7 +46,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @TeleOp
 public class SleeveDetection extends LinearOpMode
 {
-    public OpenCvCamera backCamera;
+    OpenCvWebcam backCamera;
     SkystoneDeterminationPipeline pipeline;
 
     @Override
@@ -57,9 +58,9 @@ public class SleeveDetection extends LinearOpMode
          * you should take a look at {@link InternalCamera1Example} or its
          * webcam counterpart, {@link WebcamExample} first.
          */
-
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),cameraMonitorViewId);
         pipeline = new SkystoneDeterminationPipeline();
-        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         backCamera.setPipeline(pipeline);
         backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override

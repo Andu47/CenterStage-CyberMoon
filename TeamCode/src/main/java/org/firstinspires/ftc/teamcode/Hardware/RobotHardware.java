@@ -8,12 +8,20 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.SleeveDetection;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 public class RobotHardware {
 
     Servo IntakeServo;
+    public SleeveDetection sleeveDetection;
+    public OpenCvCamera backCamera;
+
     private static RobotHardware instance = null;
 
     public boolean enabled;
@@ -27,7 +35,6 @@ public class RobotHardware {
     }
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
         //TODO declaram motoare
-        IntakeServo = hardwareMap.get(Servo.class, "IntakeServo");
 
     }
 

@@ -19,8 +19,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 @TeleOp(name = "Tele0pCommandBased")
 public class Tele0pCommandBased extends CommandOpMode {
     private ElapsedTime timer;
-    GamepadEx gamepadEx;
-    GamepadEx gamepadEx2;
     private RobotHardware robot= RobotHardware.getInstance();
     private MecanumDrive drive;
     private IntakeSubsystem intake;
@@ -32,8 +30,8 @@ public class Tele0pCommandBased extends CommandOpMode {
         robot.init(hardwareMap, telemetry);
         drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,0));
         intake = new IntakeSubsystem(robot);
-        gamepadEx = new GamepadEx(gamepad1);
-        gamepadEx2 = new GamepadEx(gamepad2);
+        //gamepadEx = new GamepadEx(gamepad1);
+        //gamepadEx2 = new GamepadEx(gamepad2);
 
     }
 
@@ -49,10 +47,10 @@ public class Tele0pCommandBased extends CommandOpMode {
 
         robot.loop(drive, intake);
         robot.write(intake);
-        double loop = System.nanoTime();
+        //double loop = System.nanoTime();
 //        telemetry.addData ();
 //        telemetry.addData();
-        telemetry.update();
+        //telemetry.update();
 
     }
 }

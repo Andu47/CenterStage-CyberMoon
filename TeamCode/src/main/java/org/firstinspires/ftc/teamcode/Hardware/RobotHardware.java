@@ -21,8 +21,6 @@ public class RobotHardware {
     Servo IntakeServo;
     public SleeveDetection sleeveDetection;
     public OpenCvCamera backCamera;
-    public MecanumDrive drive;
-
     private static RobotHardware instance = null;
 
     public boolean enabled;
@@ -40,7 +38,7 @@ public class RobotHardware {
     }
 
     public void loop(IntakeSubsystem intake) {
-        try {
+        /*try {
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             gamepad1.left_stick_y,
@@ -49,7 +47,7 @@ public class RobotHardware {
                     gamepad1.left_stick_x
             ));
             drive.updatePoseEstimate();
-        } catch (Exception ignored){}
+        } catch (Exception ignored){}*/
 
 //        try {
 //            intake.loop2();

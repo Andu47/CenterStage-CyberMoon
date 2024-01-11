@@ -5,6 +5,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -47,6 +49,15 @@ public class Tele0pCommandBased extends CommandOpMode {
 
         robot.loop(intake);
         robot.write(intake);
+        drive.setDrivePowers(new PoseVelocity2d(
+                new Vector2d(
+                        gamepad1.left_stick_y,
+                        gamepad1.right_stick_x
+                ),
+                gamepad1.left_stick_x
+        ));
+
+        drive.updatePoseEstimate();
         //double loop = System.nanoTime();
 //        telemetry.addData ();
 //        telemetry.addData();

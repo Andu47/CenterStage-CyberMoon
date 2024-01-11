@@ -62,6 +62,8 @@ public class SleeveDetection extends LinearOpMode
         backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),cameraMonitorViewId);
         pipeline = new SkystoneDeterminationPipeline();
         backCamera.setPipeline(pipeline);
+        backCamera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
+
         backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -81,8 +83,6 @@ public class SleeveDetection extends LinearOpMode
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
         // out when the RC activity is in portrait. We do our actual image processing assuming
         // landscape orientation, though.
-        backCamera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
-
 //        backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
 //        {
 //            @Override

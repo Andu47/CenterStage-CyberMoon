@@ -8,23 +8,30 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 
 public class RobotHardware {
 
     Servo IntakeServo;
-    private HardwareMap hardwareMap;
+    private static RobotHardware instance = null;
 
+    public boolean enabled;
+
+    public static RobotHardware getInstance() {
+        if (instance == null) {
+            instance = new RobotHardware();
+        }
+        instance.enabled = true;
+        return instance;
+    }
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
-        this.hardwareMap = hardwareMap;
         //TODO declaram motoare
         IntakeServo = hardwareMap.get(Servo.class, "IntakeServo");
 
     }
 
     public void loop(MecanumDrive drive, IntakeSubsystem intake) {
-        try {
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
                             gamepad1.left_stick_y,
@@ -34,8 +41,7 @@ public class RobotHardware {
             ));
 
             drive.updatePoseEstimate();
-        } catch (Exception ignored) {
-        }
+
 //        try {
 //            intake.loop2();
 //        } catch (Exception ignored){

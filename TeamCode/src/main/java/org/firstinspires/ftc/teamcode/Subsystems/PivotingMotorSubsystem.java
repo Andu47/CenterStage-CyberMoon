@@ -4,14 +4,12 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 
-public class IntakeSubsystem extends SubsystemBase {
-
+public class PivotingMotorSubsystem extends SubsystemBase {
     private RobotHardware robot;
 
-    public IntakeSubsystem(RobotHardware robot) {
-        this.robot = robot;
+    private double power=0;
 
+    public void setPivotingMotorTarget(int pos){
 
     }
-
 }

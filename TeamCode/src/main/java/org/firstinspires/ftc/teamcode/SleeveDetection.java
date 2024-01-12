@@ -55,17 +55,10 @@ public class SleeveDetection extends LinearOpMode
     public void runOpMode()
     {
         telemetry= new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        /**
-         * NOTE: Many comments have been omitted from this sample for the
-         * sake of conciseness. If you're just starting out with EasyOpenCv,
-         * you should take a look at {@link InternalCamera1Example} or its
-         * webcam counterpart, {@link WebcamExample} first.
-         */
-        //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+
         backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         pipeline = new SkystoneDeterminationPipeline();
         backCamera.setPipeline(pipeline);
-        //backCamera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
         backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -79,31 +72,6 @@ public class SleeveDetection extends LinearOpMode
             }
         });
 
-//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        backCamera = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-//        pipeline = new SkystoneDeterminationPipeline();
-//        backCamera.setPipeline(pipeline);
-
-        // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
-        // out when the RC activity is in portrait. We do our actual image processing assuming
-        // landscape orientation, though.
-//        backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-//        {
-//            @Override
-//            public void onOpened()
-//            {
-//                backCamera.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
-//            }
-//
-//            @Override
-//            public void onError(int errorCode)
-//            {
-//                /*
-//                 * This will be called if the camera could not be opened
-//                 */
-//            }
-//        });
-
         waitForStart();
 
         while (opModeIsActive())
@@ -111,7 +79,6 @@ public class SleeveDetection extends LinearOpMode
             telemetry.addData("Analysis", pipeline.getAnalysis());
             telemetry.update();
 
-            // Don't burn CPU cycles busy-looping in this sample
             sleep(50);
         }
     }
@@ -132,7 +99,7 @@ public class SleeveDetection extends LinearOpMode
          * Some color constants
          */
         static final Scalar BLUE = new Scalar(0, 0, 255);
-        static final Scalar GREEN = new Scalar(0, 255, 0);
+        static final Scalar RED = new Scalar(255, 0, 0);
 
         /*
          * The core values which define the location and size of the sample regions
@@ -334,7 +301,7 @@ public class SleeveDetection extends LinearOpMode
                         input, // Buffer to draw on
                         region1_pointA, // First point which defines the rectangle
                         region1_pointB, // Second point which defines the rectangle
-                        GREEN, // The color the rectangle is drawn in
+                        RED, // The color the rectangle is drawn in
                         -1); // Negative thickness means solid fill
             }
             else if(max == avg2) // Was it from region 2?
@@ -349,7 +316,7 @@ public class SleeveDetection extends LinearOpMode
                         input, // Buffer to draw on
                         region2_pointA, // First point which defines the rectangle
                         region2_pointB, // Second point which defines the rectangle
-                        GREEN, // The color the rectangle is drawn in
+                        RED, // The color the rectangle is drawn in
                         -1); // Negative thickness means solid fill
             }
             else if(max == avg3) // Was it from region 3?
@@ -364,7 +331,7 @@ public class SleeveDetection extends LinearOpMode
                         input, // Buffer to draw on
                         region3_pointA, // First point which defines the rectangle
                         region3_pointB, // Second point which defines the rectangle
-                        GREEN, // The color the rectangle is drawn in
+                        RED, // The color the rectangle is drawn in
                         -1); // Negative thickness means solid fill
             }
 

@@ -14,6 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 
 public class RobotHardware {
 
+    public static boolean AUTO;
     public static int pipelineStage = 0;
     public static double BLUR_RADIUS = 7;
     public static double HUE_MIN = 0;

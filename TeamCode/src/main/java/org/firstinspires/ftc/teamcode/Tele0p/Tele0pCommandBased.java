@@ -9,6 +9,8 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.SleeveDetection;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.ServoMicroSubsystem;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -25,7 +28,10 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 public class Tele0pCommandBased extends CommandOpMode {
     private ElapsedTime timer;
     private RobotHardware robot= RobotHardware.getInstance();
+    private ServoMicroSubsystem servoMicro;
     private MecanumDrive drive;
+    GamepadEx gamepadEx;
+    GamepadEx gamepadEx2;
 
 
     OpenCvCamera backCamera;
@@ -36,10 +42,14 @@ public class Tele0pCommandBased extends CommandOpMode {
         CommandScheduler.getInstance().reset();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
+        RobotHardware.AUTO=false;
+
         robot.init(hardwareMap, telemetry);
         drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,0));
-        //gamepadEx = new GamepadEx(gamepad1);
-        //gamepadEx2 = new GamepadEx(gamepad2);
+        gamepadEx = new GamepadEx(gamepad1);
+        gamepadEx2 = new GamepadEx(gamepad2);
+        gamepadEx.getGamepadButton(GamepadKeys.Button.A)
+                .whenPressed(() -> servoMicro.setMicroServo12(0.4));
 
         backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         pipeline = new SleeveDetection.SkystoneDeterminationPipeline();

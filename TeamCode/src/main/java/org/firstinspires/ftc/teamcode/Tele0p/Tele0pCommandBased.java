@@ -41,14 +41,14 @@ public class Tele0pCommandBased extends CommandOpMode {
     public void run() {
         super.run();
 
-        robot.read(intake);
+        //robot.read(intake);
 
 
 
 
 
-        robot.loop(intake);
-        robot.write(intake);
+        //robot.loop(intake);
+        //robot.write(intake);
         drive.setDrivePowers(new PoseVelocity2d(
                 new Vector2d(
                         gamepad1.left_stick_y,
@@ -58,10 +58,11 @@ public class Tele0pCommandBased extends CommandOpMode {
         ));
 
         drive.updatePoseEstimate();
-        //double loop = System.nanoTime();
-//        telemetry.addData ();
-//        telemetry.addData();
-        //telemetry.update();
+
+        telemetry.addData("x", drive.pose.position.x);
+        telemetry.addData("y", drive.pose.position.y);
+        telemetry.addData("heading (deg)", Math.toDegrees(drive.pose.heading.toDouble()));
+        telemetry.update();
 
     }
 }

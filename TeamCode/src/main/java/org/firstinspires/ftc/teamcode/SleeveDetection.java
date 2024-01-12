@@ -21,6 +21,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -46,23 +48,24 @@ import org.openftc.easyopencv.OpenCvWebcam;
 @TeleOp
 public class SleeveDetection extends LinearOpMode
 {
-    OpenCvWebcam backCamera;
+    OpenCvCamera backCamera;
     SkystoneDeterminationPipeline pipeline;
 
     @Override
     public void runOpMode()
     {
+        telemetry= new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         /**
          * NOTE: Many comments have been omitted from this sample for the
          * sake of conciseness. If you're just starting out with EasyOpenCv,
          * you should take a look at {@link InternalCamera1Example} or its
          * webcam counterpart, {@link WebcamExample} first.
          */
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"),cameraMonitorViewId);
+        //int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         pipeline = new SkystoneDeterminationPipeline();
         backCamera.setPipeline(pipeline);
-        backCamera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
+        //backCamera.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
         backCamera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override

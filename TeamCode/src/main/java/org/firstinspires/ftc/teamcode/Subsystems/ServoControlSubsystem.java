@@ -10,10 +10,13 @@ public class ServoControlSubsystem extends SubsystemBase {
     public ServoControlSubsystem(RobotHardware robot){
         this.robot= robot;
     }
-    public void setServoControl(double pos){
+    public void setPositionServoControl(double pos){
         robot.AngleControlServo.setPosition(pos);
     }
-    public void setAngleServoControl(int angle){
+    public void setPositionServoControl1(double pos){
+        robot.AngleControlServo.setPosition(pos);
+    }
+    public void setAnglePositionServoControl(int angle){
         double pos=angle/300.00;
         robot.AngleControlServo.setPosition(pos);
     }

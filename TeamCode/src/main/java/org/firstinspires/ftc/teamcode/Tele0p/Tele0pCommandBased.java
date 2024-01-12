@@ -13,11 +13,15 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.SleeveDetection;
+import org.firstinspires.ftc.teamcode.Subsystems.ExtentionSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.MecanumDrive;
+import org.firstinspires.ftc.teamcode.Subsystems.PivotingMotorSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.ServoControlSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ServoMicroSubsystem;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -27,13 +31,15 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @TeleOp(name = "Tele0pCommandBased")
 public class Tele0pCommandBased extends CommandOpMode {
     private ElapsedTime timer;
-    private RobotHardware robot= RobotHardware.getInstance();
+    private RobotHardware robot = RobotHardware.getInstance();
     private ServoMicroSubsystem servoMicro;
+    private ServoControlSubsystem servoControl;
+    private PivotingMotorSubsystem pivotingMotorSubsystem;
+    private ExtentionSubsystem extentionSubsystem;
     private MecanumDrive drive;
-    GamepadEx gamepadEx;
+    GamepadEx gamepadEx1;
     GamepadEx gamepadEx2;
-
-
+    int extTarget=0;
     OpenCvCamera backCamera;
     SleeveDetection.SkystoneDeterminationPipeline pipeline;
 
@@ -42,15 +48,37 @@ public class Tele0pCommandBased extends CommandOpMode {
         CommandScheduler.getInstance().reset();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        RobotHardware.AUTO=false;
+        RobotHardware.AUTO = false;
 
         robot.init(hardwareMap, telemetry);
-        drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,0));
-        gamepadEx = new GamepadEx(gamepad1);
-        gamepadEx2 = new GamepadEx(gamepad2);
-        gamepadEx.getGamepadButton(GamepadKeys.Button.A)
-                .whenPressed(() -> servoMicro.setMicroServo12(0.4));
 
+        drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        servoMicro = new ServoMicroSubsystem(robot);
+        servoControl = new ServoControlSubsystem(robot);
+        pivotingMotorSubsystem = new PivotingMotorSubsystem(robot);
+        extentionSubsystem = new ExtentionSubsystem(robot);
+
+        gamepadEx1 = new GamepadEx(gamepad1);
+        gamepadEx2 = new GamepadEx(gamepad2);
+
+        //*DESCHIDERE/INCHIDERE AMBELE SERVOURI
+        gamepadEx1.getGamepadButton(GamepadKeys.Button.A)
+                .whenPressed(() -> {
+                    servoControl.setPositionServoControl1(RobotHardware.ServoControlMIN);
+                    sleep(1000);
+                    servoMicro.setMicroServo12();
+                });
+
+        //*SETARE EXTENTION SUS
+        gamepadEx1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+                .whenPressed(() -> extentionSubsystem.setExtentionTarget(RobotHardware.ExtentionMAX));
+
+        //*SETARE EXTENTION JOS
+        gamepadEx2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+                .whenPressed(() -> extentionSubsystem.setExtentionTarget(RobotHardware.ExtentionMIN));
+
+
+        //*DECLARATII CAMERA
         backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         pipeline = new SleeveDetection.SkystoneDeterminationPipeline();
         backCamera.setPipeline(pipeline);
@@ -71,9 +99,21 @@ public class Tele0pCommandBased extends CommandOpMode {
     @Override
     public void run() {
         super.run();
+
+        extTarget=extentionSubsystem.getExtentionCurrentPosition();
         //robot.read(intake);
         //robot.loop(intake);
         //robot.write(intake);
+        //* MUTARE SERVOCONTROL LA POZITIE MAXIMA DUPA PivotMID
+        if(pivotingMotorSubsystem.getPivotingMotorPosition()>RobotHardware.PivotMID)
+            servoControl.setPositionServoControl(RobotHardware.ServoControlMAX);
+
+        //* MUTARE EXTENTION DE LA JOYSTICK
+        if(gamepad2.left_stick_y!=0){
+            extTarget+=(int)(gamepad2.left_stick_y*10);
+            extTarget= Range.clip(extTarget, RobotHardware.ExtentionMIN, RobotHardware.ExtentionMAX);
+        }
+        extentionSubsystem.setExtentionTarget(extTarget);
 
         drive.setDrivePowers(new PoseVelocity2d(
                 new Vector2d(

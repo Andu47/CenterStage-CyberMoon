@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.SleeveDetection;
 import org.firstinspires.ftc.teamcode.Subsystems.ExtentionSubsystem;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
-
+@Config
 public class RobotHardware {
 
     public static boolean AUTO;
@@ -32,16 +33,29 @@ public class RobotHardware {
     public DcMotorEx PivotingMotor;
     public DcMotorEx ExtentionMotor;
 
-//    public DcMotorEx FataDr;
-//    public DcMotorEx SpateDr;
-//    public DcMotorEx FataSt;
-//    public DcMotorEx SpateSt;
-
     public SleeveDetection.SkystoneDeterminationPipeline pipeline;
     public OpenCvCamera backCamera;
     private static RobotHardware instance = null;
 
     public boolean enabled;
+
+    //! VALORI CONSTANTE
+
+    public static double MicroServoDESCHIS1=0.85;
+    public static double MicroServoDESCHIS2=0.35;
+    public static double MicroServoINCHIS1=0.50;
+    public static double MicroServoINCHIS2=0.71;
+
+    public static int PivotMAX=1185;
+    public static int PivotMID=800;
+    public static int PivotMIN=0;
+
+    public static int ExtentionMAX=980;
+    public static int ExtentionMIN=0;
+
+    public static double ServoControlMAX=0.48;
+    public static double ServoControlMID=0.2;
+    public static double ServoControlMIN=0;
 
     public static RobotHardware getInstance() {
         if (instance == null) {
@@ -58,14 +72,10 @@ public class RobotHardware {
         AngleControlServo= hardwareMap.get(Servo.class, "ControlServo");
 
         PivotingMotor= hardwareMap.get(DcMotorEx.class, "PivotingMotor");
-        ExtentionMotor= hardwareMap.get(DcMotorEx.class, "ExtentionMotor");
+        PivotingMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        ExtentionMotor= hardwareMap.get(DcMotorEx.class, "ExtensionMotor");
         ExtentionMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-//        FataDr= hardwareMap.get(DcMotorEx.class, "FataDr");
-//        FataSt= hardwareMap.get(DcMotorEx.class, "FataSt");
-//        SpateDr= hardwareMap.get(DcMotorEx.class, "SpateDr");
-//        SpateSt= hardwareMap.get(DcMotorEx.class, "SpateSt");
 
         backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         pipeline = new SleeveDetection.SkystoneDeterminationPipeline();
@@ -73,21 +83,8 @@ public class RobotHardware {
 
     }
 
-    public void loop() {
-        /*try {
-            drive.setDrivePowers(new PoseVelocity2d(
-                    new Vector2d(
-                            gamepad1.left_stick_y,
-                            gamepad1.right_stick_x
-                    ),
-                    gamepad1.left_stick_x
-            ));
-            drive.updatePoseEstimate();
-        } catch (Exception ignored){}*/
+    public void loop(ExtentionSubsystem extention) {
 
-//        try {
-//            intake.loop2();
-//        } catch (Exception ignored){
     }
 
     public void read() {

@@ -34,6 +34,7 @@ public class ExtentionSubsystem extends SubsystemBase {
          currentPosition=robot.ExtentionMotor.getCurrentPosition();
     }
 
+
     public void setExtentionTarget(int targetPosition){
         this.targetPosition=targetPosition;
     }

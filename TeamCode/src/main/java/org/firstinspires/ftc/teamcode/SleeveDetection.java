@@ -71,6 +71,7 @@ public class SleeveDetection extends LinearOpMode
             @Override
             public void onOpened() {
                 backCamera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(backCamera, 10);
             }
 
             @Override

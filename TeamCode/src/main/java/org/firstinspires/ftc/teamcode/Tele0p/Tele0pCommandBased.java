@@ -40,15 +40,13 @@ public class Tele0pCommandBased extends CommandOpMode {
     GamepadEx gamepadEx1;
     GamepadEx gamepadEx2;
     int extTarget=0;
-    OpenCvCamera backCamera;
-    SleeveDetection.SkystoneDeterminationPipeline pipeline;
+    //OpenCvCamera backCamera;
+    //SleeveDetection.SkystoneDeterminationPipeline pipeline;
 
     @Override
     public void initialize() {
         CommandScheduler.getInstance().reset();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
-        RobotHardware.AUTO = false;
 
         robot.init(hardwareMap, telemetry);
 
@@ -65,7 +63,7 @@ public class Tele0pCommandBased extends CommandOpMode {
         gamepadEx1.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(() -> {
                     servoControl.setPositionServoControl1(RobotHardware.ServoControlMIN);
-                    sleep(1000);
+                    sleep(800);
                     servoMicro.setMicroServo12();
                 });
 
@@ -79,7 +77,7 @@ public class Tele0pCommandBased extends CommandOpMode {
 
 
         //*DECLARATII CAMERA
-        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        /*backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         pipeline = new SleeveDetection.SkystoneDeterminationPipeline();
         backCamera.setPipeline(pipeline);
 
@@ -93,7 +91,7 @@ public class Tele0pCommandBased extends CommandOpMode {
             @Override
             public void onError(int errorCode) {
             }
-        });
+        });*/
     }
 
     @Override

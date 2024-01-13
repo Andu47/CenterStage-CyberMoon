@@ -15,7 +15,6 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 @Config
 public class RobotHardware {
 
-    public static boolean AUTO;
     public static int pipelineStage = 0;
     public static double BLUR_RADIUS = 7;
     public static double HUE_MIN = 0;
@@ -33,8 +32,10 @@ public class RobotHardware {
     public DcMotorEx PivotingMotor;
     public DcMotorEx ExtentionMotor;
 
-    public SleeveDetection.SkystoneDeterminationPipeline pipeline;
-    public OpenCvCamera backCamera;
+    private HardwareMap hardwareMap;
+
+    //public SleeveDetection.SkystoneDeterminationPipeline pipeline;
+    //public OpenCvCamera backCamera;
     private static RobotHardware instance = null;
 
     public boolean enabled;
@@ -65,6 +66,7 @@ public class RobotHardware {
         return instance;
     }
     public void init(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.hardwareMap=hardwareMap;
         //TODO declaram motoare
         MicroServo1= hardwareMap.get(Servo.class, "MicroServo1");
         MicroServo2= hardwareMap.get(Servo.class, "MicroServo2");
@@ -72,14 +74,16 @@ public class RobotHardware {
         AngleControlServo= hardwareMap.get(Servo.class, "ControlServo");
 
         PivotingMotor= hardwareMap.get(DcMotorEx.class, "PivotingMotor");
+        PivotingMotor.setTargetPosition(0);
         PivotingMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         ExtentionMotor= hardwareMap.get(DcMotorEx.class, "ExtensionMotor");
-        ExtentionMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ExtentionMotor.setTargetPosition(0);
+        ExtentionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        pipeline = new SleeveDetection.SkystoneDeterminationPipeline();
-        backCamera.setPipeline(pipeline);
+//        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+//        pipeline = new SleeveDetection.SkystoneDeterminationPipeline();
+//        backCamera.setPipeline(pipeline);
 
     }
 

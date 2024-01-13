@@ -37,6 +37,7 @@ public class ExtentionSubsystem extends SubsystemBase {
 
     public void setExtentionTarget(int targetPosition){
         this.targetPosition=targetPosition;
+        robot.ExtentionMotor.setTargetPosition(targetPosition);
     }
     public int getExtentionTarget(){
         return this.targetPosition;

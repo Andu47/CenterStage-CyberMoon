@@ -26,12 +26,12 @@ public class ServoMicroSubsystem extends SubsystemBase {
         if(!isClosed) {
             robot.MicroServo1.setPosition(robot.MicroServoINCHIS1);
             robot.MicroServo2.setPosition(robot.MicroServoINCHIS2);
-            isClosed=false;
+            isClosed=true;
         }
         else {
             robot.MicroServo1.setPosition(robot.MicroServoDESCHIS1);
             robot.MicroServo2.setPosition(robot.MicroServoDESCHIS2);
-            isClosed=true;
+            isClosed=false;
         }
     }
 }

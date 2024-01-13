@@ -51,12 +51,16 @@ public class RobotHardware {
     public static int PivotMID=800;
     public static int PivotMIN=0;
 
-    public static int ExtentionMAX=980;
+    public static int ExtentionMAX=750;
     public static int ExtentionMIN=0;
 
     public static double ServoControlMAX=0.48;
     public static double ServoControlMID=0.2;
     public static double ServoControlMIN=0;
+
+    //public static double ServoControlMAX=0.75;
+    //public static double ServoControlMID=0.9;
+    //public static double ServoControlMIN=1;
 
     public static RobotHardware getInstance() {
         if (instance == null) {

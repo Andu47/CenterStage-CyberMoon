@@ -78,11 +78,13 @@ public class RobotHardware {
         AngleControlServo= hardwareMap.get(Servo.class, "ControlServo");
 
         PivotingMotor= hardwareMap.get(DcMotorEx.class, "PivotingMotor");
-        PivotingMotor.setTargetPosition(0);
+        PivotingMotor.setTargetPosition(RobotHardware.PivotMIN);
+        PivotingMotor.setPower(1);
         PivotingMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         ExtentionMotor= hardwareMap.get(DcMotorEx.class, "ExtensionMotor");
-        ExtentionMotor.setTargetPosition(0);
+        ExtentionMotor.setTargetPosition(RobotHardware.ExtentionMIN);
+        ExtentionMotor.setPower(1);
         ExtentionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 //        backCamera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));

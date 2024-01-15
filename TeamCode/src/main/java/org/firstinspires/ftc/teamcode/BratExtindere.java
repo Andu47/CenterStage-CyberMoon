@@ -10,7 +10,7 @@ import static org.firstinspires.ftc.teamcode.Hardware.Constante.ExtindatoareMIN;
 
 import org.firstinspires.ftc.teamcode.Hardware.Constante;
 
-@TeleOp
+//@TeleOp
 public class BratExtindere extends LinearOpMode {
 
 

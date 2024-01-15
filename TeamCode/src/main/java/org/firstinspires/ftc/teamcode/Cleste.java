@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.Hardware.Constante;
 
 
-@TeleOp
+//@TeleOp
 public class Cleste extends LinearOpMode
 {
     Servo servo1; //dreptul

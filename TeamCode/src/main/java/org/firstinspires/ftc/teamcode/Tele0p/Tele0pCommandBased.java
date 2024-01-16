@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -40,6 +41,7 @@ public class Tele0pCommandBased extends CommandOpMode {
     GamepadEx gamepadEx1;
     GamepadEx gamepadEx2;
     int extTarget=0;
+    int pivTarget=0;
     //OpenCvCamera backCamera;
     //SleeveDetection.SkystoneDeterminationPipeline pipeline;
 
@@ -62,18 +64,21 @@ public class Tele0pCommandBased extends CommandOpMode {
         //*DESCHIDERE/INCHIDERE AMBELE SERVOURI
         gamepadEx1.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(() -> {
-                    servoControl.setPositionServoControl1(RobotHardware.ServoControlMIN);
                     sleep(800);
                     servoMicro.setMicroServo12();
                 });
 
         //*SETARE EXTENTION SUS
         gamepadEx1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-                .whenPressed(() -> extentionSubsystem.setExtentionTarget(RobotHardware.ExtentionMAX));
+                .whenPressed(() -> schedule(new InstantCommand(() -> pivotingMotorSubsystem.setPivotingMotorTarget(RobotHardware.PivotMAX))));
+
+        //*SETARE EXTENTION MID
+        gamepadEx1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+                .whenPressed(() -> pivotingMotorSubsystem.setPivotingMotorTarget(RobotHardware.PivotMID));
 
         //*SETARE EXTENTION JOS
         gamepadEx2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
-                .whenPressed(() -> extentionSubsystem.setExtentionTarget(RobotHardware.ExtentionMIN));
+                .whenPressed(() -> pivotingMotorSubsystem.setPivotingMotorTarget(RobotHardware.PivotMIN));
 
 
         //*DECLARATII CAMERA
@@ -102,16 +107,26 @@ public class Tele0pCommandBased extends CommandOpMode {
         //robot.read(intake);
         //robot.loop(intake);
         //robot.write(intake);
+        extTarget=robot.ExtentionMotor.getCurrentPosition();
         //* MUTARE SERVOCONTROL LA POZITIE MAXIMA DUPA PivotMID
-        if(pivotingMotorSubsystem.getPivotingMotorPosition()>RobotHardware.PivotMID)
-            servoControl.setPositionServoControl(RobotHardware.ServoControlMAX);
+        if(robot.PivotingMotor.getCurrentPosition()> RobotHardware.PivotMID)
+            robot.AngleControlServo.setPosition(RobotHardware.ServoControlMAX);
+
+        if(robot.PivotingMotor.getCurrentPosition()< RobotHardware.PivotMID && robot.PivotingMotor.getCurrentPosition()>200)
+            robot.AngleControlServo.setPosition(RobotHardware.ServoControlMIN);
 
         //* MUTARE EXTENTION DE LA JOYSTICK
         if(gamepad2.left_stick_y!=0){
-            extTarget+=(int)(gamepad2.left_stick_y*10);
+            extTarget+=(int)(gamepad2.left_stick_y*40);
             extTarget= Range.clip(extTarget, RobotHardware.ExtentionMIN, RobotHardware.ExtentionMAX);
         }
-        extentionSubsystem.setExtentionTarget(extTarget);
+        robot.ExtentionMotor.setTargetPosition(extTarget);
+
+        if(gamepad2.right_stick_y!=0) {
+            pivTarget+=(int)(gamepad2.right_stick_y*30);
+            pivTarget= Range.clip(pivTarget, RobotHardware.PivotMIN, RobotHardware.PivotMAX);
+        }
+        robot.PivotingMotor.setTargetPosition(pivTarget);
 
         drive.setDrivePowers(new PoseVelocity2d(
                 new Vector2d(

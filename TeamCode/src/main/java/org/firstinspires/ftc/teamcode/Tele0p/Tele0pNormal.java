@@ -82,10 +82,10 @@ public class Tele0pNormal extends LinearOpMode {
         while (opModeIsActive()) {
             extTarget=ExtentionMotor.getCurrentPosition();
             //* MUTARE SERVOCONTROL LA POZITIE MAXIMA DUPA PivotMID
-            if(PivotingMotor.getCurrentPosition()> RobotHardware.PivotMID)
+            if(PivotingMotor.getCurrentPosition()> 200)
                 AngleControlServo.setPosition(RobotHardware.ServoControlMAX);
 
-            if(PivotingMotor.getCurrentPosition()< RobotHardware.PivotMID && PivotingMotor.getCurrentPosition()>200)
+            if(PivotingMotor.getCurrentPosition()< 200)
                 AngleControlServo.setPosition(RobotHardware.ServoControlMIN);
 
             //* MUTARE EXTENTION DE LA JOYSTICK
@@ -119,7 +119,6 @@ public class Tele0pNormal extends LinearOpMode {
                     MicroServo1.setPosition(RobotHardware.MicroServoINCHIS1);
                     MicroServo2.setPosition(RobotHardware.MicroServoINCHIS2);
                     sleep(700);
-                    AngleControlServo.setPosition(RobotHardware.ServoControlMID);
                     isClosed=true;
                 }
                 else {
